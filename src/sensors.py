@@ -206,6 +206,27 @@ def get_host_arch():
     except:
         return 'Unknown'
 
+def get_pihole_version():
+    return str(subprocess.check_output([
+    "bash",
+    "-c",
+    "/opt/pihole/version.sh | cut -d ' ' -f 3,6 | grep -i 'pi-hole' | cut -d ' ' -f 2",
+    ]).decode("utf-8").rstrip())
+
+def get_ftl_version():
+    return str(subprocess.check_output([
+    "bash",
+    "-c",
+    "/opt/pihole/version.sh | cut -d ' ' -f 3,6 | grep -i 'ftl' | cut -d ' ' -f 2",
+    ]).decode("utf-8").rstrip())
+
+def get_adminlte_version():
+    return str(subprocess.check_output([
+    "bash",
+    "-c",
+    "/opt/pihole/version.sh | cut -d ' ' -f 3,6 | grep -i 'lte' | cut -d ' ' -f 2",
+    ]).decode("utf-8").rstrip())
+
 # Builds an external drive entry to fix incorrect usage reporting
 def external_drive_base(drive, drive_path) -> dict:
     return {
@@ -335,4 +356,22 @@ sensors = {
                  'icon': 'wifi',
                  'sensor_type': 'sensor',
                  'function': get_wifi_ssid},
-          }
+            'pihole_version':
+                {
+                 'name': 'Pi-Hole version',
+                 'icon': 'numeric',
+                 'sensor_type': 'sensor',
+                 'function': get_pihole_version},
+            'ftl_version':
+                {
+                 'name': 'Pi-Hole FTL version',
+                 'icon': 'numeric',
+                 'sensor_type': 'sensor',
+                 'function': get_ftl_version},
+            'adminlte_version':
+                {
+                 'name': 'Pi-Hole AdminLTE version',
+                 'icon': 'numeric',
+                 'sensor_type': 'sensor',
+                 'function': get_adminlte_version},
+        }
